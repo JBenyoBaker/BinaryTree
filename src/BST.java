@@ -46,17 +46,62 @@ public class BST {
      * @param val integer value to search for
      * @return true if val is in the tree, false otherwise
      */
-    public boolean search(int val) {
+    public boolean search(int val)
+    {
         // TODO: Complete the search function
-        return false;
+        return hasVal(val, this.root);
+    }
+
+    public boolean hasVal(int val, BSTNode node)
+    {
+        //if the value of the node is greater than the target value run has val again on the subtree to the left of the node
+        if (val < node.getVal())
+        {
+            if (node.getLeft() == null)
+            {
+                return false;
+            }
+            return hasVal(val, node.getLeft());
+        }
+        //if the value of the node is less than the target value run has val again on the subtree to the right of the node
+        else if(val > node.getVal())
+        {
+            if (node.getRight() == null)
+            {
+                return false;
+            }
+            return hasVal(val, node.getRight());
+        }
+        //if the value of the node is not greater than or less than the node then it must be equal so we should return that node
+        return true;
     }
 
     /**
      * @return ArrayList of BSTNodes in inorder
      */
-    public ArrayList<BSTNode> getInorder() {
+    public ArrayList<BSTNode> getInorder()
+    {
         // TODO: Complete inorder traversal
-        return null;
+        ArrayList<BSTNode> arr = new ArrayList<BSTNode>();
+        inOrder(this.root, arr);
+        return arr;
+    }
+
+    public void inOrder(BSTNode node, ArrayList<BSTNode> arr)
+    {
+        //if there are more nodes down the tree to the left then rerun the method on the subtree to the left
+        if(node.getLeft() != null)
+        {
+            inOrder(node.getLeft(), arr);
+        }
+        //add this node to the arraylist
+        arr.add(node);
+        //if there are more nodes down the tree to the right then rerun the method on the subtree to the right
+        if (node.getRight() != null)
+        {
+            inOrder(node.getRight(), arr);
+        }
+        return;
     }
 
     /**
@@ -64,7 +109,26 @@ public class BST {
      */
     public ArrayList<BSTNode> getPreorder() {
         // TODO: Complete preorder traversal
-        return null;
+        ArrayList<BSTNode> arr = new ArrayList<BSTNode>();
+        preOrder(this.root, arr);
+        return arr;
+    }
+
+    public void preOrder(BSTNode node, ArrayList<BSTNode> arr)
+    {
+        //add this node to the arraylist
+        arr.add(node);
+        //if there are more nodes down the tree to the left then rerun the method on the subtree to the left
+        if(node.getLeft() != null)
+        {
+            preOrder(node.getLeft(), arr);
+        }
+        //if there are more nodes down the tree to the right then rerun the method on the subtree to the right
+        if (node.getRight() != null)
+        {
+            preOrder(node.getRight(), arr);
+        }
+        return;
     }
 
     /**
@@ -72,7 +136,26 @@ public class BST {
      */
     public ArrayList<BSTNode> getPostorder() {
         // TODO: Complete postorder traversal
-        return null;
+        ArrayList<BSTNode> arr = new ArrayList<BSTNode>();
+        postOrder(this.root, arr);
+        return arr;
+    }
+
+    public void postOrder(BSTNode node, ArrayList<BSTNode> arr)
+    {
+        //if there are more nodes down the tree to the left then rerun the method on the subtree to the left
+        if(node.getLeft() != null)
+        {
+            postOrder(node.getLeft(), arr);
+        }
+        //if there are more nodes down the tree to the right then rerun the method on the subtree to the right
+        if (node.getRight() != null)
+        {
+            postOrder(node.getRight(), arr);
+        }
+        //add this node
+        arr.add(node);
+        return;
     }
 
     /**
@@ -81,8 +164,38 @@ public class BST {
      * root instance variable to be the root of the new modified tree.
      * @param val The value ot insert
      */
-    public void insert(int val) {
+    public void insert(int val)
+    {
         // TODO: Complete insert
+        insertion(val, this.root);
+        return;
+    }
+
+    public void insertion (int val, BSTNode node)
+    {
+        if (val < node.getVal())
+        {
+            //if there are no further subtrees then insert the value and exit the function
+            if (node.getLeft() == null)
+            {
+                node.setLeft(new BSTNode(val));
+                return;
+            }
+            //rerun the method on the subtree to the left
+            insertion(val, node.getLeft());
+        }
+        else if (val > node.getVal() && node.getRight() != null)
+        {
+            //if there are no further subtrees then insert the value and exit the function
+            if (node.getRight() == null)
+            {
+                node.setRight(new BSTNode(val));
+                return;
+            }
+            //rerun the method on the subtree to the left
+            insertion(val, node.getRight());
+        }
+
     }
 
     /**
@@ -114,8 +227,8 @@ public class BST {
         sol = tree.getInorder();
         printNodes(sol);
 
-        System.out.println("\nPostorder traversal of binary tree is");
-        sol = tree.getPostorder();
+       System.out.println("\nPostorder traversal of binary tree is");
+       sol = tree.getPostorder();
         printNodes(sol);
 
         tree.insert(8);
